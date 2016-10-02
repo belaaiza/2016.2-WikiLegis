@@ -23,7 +23,7 @@ public class SegmentDAO extends DaoUtilities{
     private static String tableName = "Segments";
 
     private SegmentDAO(final Context context) {
-        SegmentDAO.database = new DatabaseHelper(context);
+        SegmentDAO.setDatabase(new DatabaseHelper(context));
     }
 
     public static SegmentDAO getInstance(final Context context) {
@@ -36,7 +36,7 @@ public class SegmentDAO extends DaoUtilities{
     }
 
     public boolean  isDatabaseEmpty(){
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT 1 FROM " + tableName;
 
@@ -63,11 +63,11 @@ public class SegmentDAO extends DaoUtilities{
 
     public boolean insertSegment(final Segment segment) {
 
-        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getDatabase().getReadableDatabase();
 
         ContentValues values = new ContentValues();
 
-        SegmentController segmentController = SegmentController.getInstance(context);
+        SegmentController segmentController = SegmentController.getInstance(getContext());
 
         String contentWhitType = segmentController.addingTypeContent(segment);
 
@@ -105,13 +105,13 @@ public class SegmentDAO extends DaoUtilities{
     public long deleteAllSegments() {
         long result;
 
-        result = deleteAndClose(sqliteDatabase, tableName);
+        result = deleteAndClose(getDatabase().getReadableDatabase(), tableName);
 
         return result;
     }
 
     public Segment getSegmentById(final Integer id) throws SegmentException {
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName + " WHERE \"id\" = " + id.toString();
 
@@ -141,7 +141,7 @@ public class SegmentDAO extends DaoUtilities{
 
     public List<Segment> getAllSegments() throws SegmentException {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName;
 
