@@ -15,14 +15,14 @@ import gppmds.wikilegis.model.Bill;
 public class BillDAO extends DaoUtilities{
 
     private static String tableColumns[] = {"id", "title", "epigraph", "description", "theme",
-    "amountProposals", "status", "date"};
+            "amountProposals", "status", "date"};
 
     private static BillDAO instance;
 
     private static String tableName = "Bill";
 
     private BillDAO(final Context context) {
-        BillDAO.database = new DatabaseHelper(context);
+        BillDAO.setDatabase( new DatabaseHelper(context));
     }
 
     public static BillDAO getInstance(final Context context) {
@@ -36,7 +36,7 @@ public class BillDAO extends DaoUtilities{
 
     public boolean isDatabaseEmpty() {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT 1 FROM " + tableName;
 
@@ -60,7 +60,7 @@ public class BillDAO extends DaoUtilities{
 
     public boolean insertBill(final Bill bill) {
 
-        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getDatabase().getReadableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -93,14 +93,14 @@ public class BillDAO extends DaoUtilities{
     public long deleteAllBills() {
         long result;
 
-        result = deleteAndClose(sqliteDatabase, tableName);
+        result = deleteAndClose(getDatabase().getReadableDatabase(), tableName);
 
         return result;
     }
 
     public List<Bill> getAllBills() throws BillException {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName;
 
@@ -128,7 +128,7 @@ public class BillDAO extends DaoUtilities{
 
     public Bill getBillById(final Integer id) throws BillException {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName + " WHERE [id] = " + id.toString();
 
