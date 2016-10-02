@@ -26,7 +26,7 @@ public class SegmentsOfBillDAO extends  DaoUtilities{
     private static String tableName = "SegmentsBill";
 
     private SegmentsOfBillDAO(Context context) {
-        BillDAO.database = new DatabaseHelper(context);
+        BillDAO.setDatabase(new DatabaseHelper(context));
     }
 
     public static SegmentsOfBillDAO getInstance(Context context) {
@@ -40,7 +40,7 @@ public class SegmentsOfBillDAO extends  DaoUtilities{
 
     public boolean isDatabaseEmpty() {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();;
 
         String query = "SELECT 1 FROM " + tableName;
 
@@ -67,7 +67,7 @@ public class SegmentsOfBillDAO extends  DaoUtilities{
 
     public boolean insertSegmentsOfBill(SegmentsOfBill segmentsOfBill) {
 
-        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getDatabase().getReadableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -102,14 +102,14 @@ public class SegmentsOfBillDAO extends  DaoUtilities{
     public long deleteAllSegmentsOfBill() {
         long result;
 
-        result = deleteAndClose(sqliteDatabase, tableName);
+        result = deleteAndClose(getDatabase().getReadableDatabase(), tableName);
 
         return result;
     }
 
     public List<SegmentsOfBill> getAllSegments() throws SegmentException {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName;
 
@@ -138,7 +138,7 @@ public class SegmentsOfBillDAO extends  DaoUtilities{
 
     public List<SegmentsOfBill> getAllSegmentsOfBill(Integer idBill) {
 
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String idBillAux = idBill.toString();
 

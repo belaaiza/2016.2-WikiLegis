@@ -21,7 +21,7 @@ public class VotesDAO extends DaoUtilities{
     private static String tableName = "votes";
 
     private VotesDAO(final Context context) {
-        VotesDAO.database = new DatabaseHelper(context);
+        VotesDAO.setDatabase(new DatabaseHelper(context));
     }
 
     public static VotesDAO getInstance(final Context context) {
@@ -34,7 +34,7 @@ public class VotesDAO extends DaoUtilities{
     }
 
     public boolean  isDatabaseEmpty(){
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT 1 FROM " + tableName;
 
@@ -60,7 +60,7 @@ public class VotesDAO extends DaoUtilities{
 
     public boolean insertVote(final Votes vote) {
 
-        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = getDatabase().getReadableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -88,7 +88,7 @@ public class VotesDAO extends DaoUtilities{
     }
 
     public List<Votes> getAllVotes() throws VotesException {
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName;
 
@@ -112,7 +112,7 @@ public class VotesDAO extends DaoUtilities{
     }
 
     public List<Votes> getVotesByIdOfSegment(final Integer id) throws VotesException {
-        sqliteDatabase = database.getReadableDatabase();
+        SQLiteDatabase sqliteDatabase = getDatabase().getReadableDatabase();
 
         String query = "SELECT * FROM " + tableName + " WHERE \"segmentId\" = " + id.toString();
 
