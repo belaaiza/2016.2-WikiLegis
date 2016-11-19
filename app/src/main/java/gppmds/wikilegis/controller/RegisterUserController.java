@@ -16,7 +16,7 @@ import gppmds.wikilegis.model.User;
 public class RegisterUserController {
 
     private static RegisterUserController instance = null;
-    private final Context context;
+    private Context context;
 
     private RegisterUserController(final Context contextParameter) {
         this.context = contextParameter;
@@ -39,38 +39,24 @@ public class RegisterUserController {
             JSONException{
 
         String registerStatus;
+        User user = null;
 
         try{
+            user = new User(firstName, lastName, email, password, passwordConfirmation);
+            registerStatus = postUser(user);
 
-            User user = new User(firstName, lastName, email, password, passwordConfirmation);
-
-            JSONObject userJson = setJSON(user);
-
-            PostRequest postRequest = new PostRequest(context,
-                    "http://wikilegis-staging.labhackercd.net/api/user/create/");
-
-            try{
-                String responseInformation = postRequest.execute(userJson.toString(),
-                        "application/json").get();
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            } catch(ExecutionException e){
-                e.printStackTrace();
-            }
-
-            Log.d("Response", postRequest.getResponse() + "");
-
-            registerStatus = String.valueOf(postRequest.getResponse());
-
-        } catch (UserException e) {
+        } catch (UserException e){
             String exceptionMessage = e.getMessage();
             registerStatus = exceptionMessage;
-        } catch (JSONException e) {
+        } catch(ExecutionException e){
+            String exceptionMessage = e.getMessage();
+            registerStatus = exceptionMessage;
+        } catch(InterruptedException e){
             String exceptionMessage = e.getMessage();
             registerStatus = exceptionMessage;
         }
 
-        return  registerStatus;
+        return registerStatus;
     }
 
     private JSONObject setJSON(User user) throws JSONException {
@@ -80,5 +66,25 @@ public class RegisterUserController {
         jsonParam.put("last_name", user.getLastName());
         jsonParam.put("password", user.getPassword());
         return jsonParam;
+    }
+
+    public String postUser(User user) throws ExecutionException, InterruptedException,
+            JSONException{
+
+        JSONObject userJson = null;
+        String registerStatus;
+
+        userJson = setJSON(user);
+
+        PostRequest postRequest = new PostRequest(context,
+                "http://wikilegis-staging.labhackercd.net/api/user/create/");
+
+        postRequest.execute(userJson.toString(),"application/json").get();
+
+        Log.d("Response", postRequest.getResponse() + "");
+
+        registerStatus = String.valueOf(postRequest.getResponse());
+
+        return registerStatus;
     }
 }
