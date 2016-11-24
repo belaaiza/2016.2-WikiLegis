@@ -55,7 +55,7 @@ public class ViewSegmentFragment extends Fragment implements View.OnClickListene
         segmentId = getArguments().getInt("segmentId");
         billId = getArguments().getInt("billId");
 
-        //setView(inflater, container);
+        setView(inflater, container);
         view = inflater.inflate(R.layout.fragment_view_segment, container, false);
         recyclerView= (RecyclerView) view.findViewById(R.id.recycler_viewSegment);
 
@@ -70,7 +70,7 @@ public class ViewSegmentFragment extends Fragment implements View.OnClickListene
         floatingActionButton.setVisibility(View.VISIBLE);
         floatingActionButton.setOnClickListener(this);
 
-        //settingText();
+        settingText();
 
         TabLayout tabs = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabs.setVisibility(View.GONE);
@@ -93,8 +93,9 @@ public class ViewSegmentFragment extends Fragment implements View.OnClickListene
             proposalsList = SegmentController.getProposalsOfSegment(segmentList, segmentId);
         }
 
-            RecyclerViewAdapterContent content = new RecyclerViewAdapterContent(proposalsList,
+        RecyclerViewAdapterContent content = new RecyclerViewAdapterContent(proposalsList,
                     billId, segmentId);
+
         recyclerView.setAdapter(content);
 
         return view;
@@ -122,7 +123,7 @@ public class ViewSegmentFragment extends Fragment implements View.OnClickListene
             segmentText = (TextView) view.findViewById(R.id.contentSegmentOffline);
         }
 
-        recyclerView= (RecyclerView) view.findViewById(R.id.recycler_viewSegment);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_viewSegment);
     }
 
     private void settingText() {
@@ -154,6 +155,7 @@ public class ViewSegmentFragment extends Fragment implements View.OnClickListene
             e.printStackTrace();
         }
     }
+
     private void openFragment(Fragment fragmentToBeOpen){
 
         android.support.v4.app.FragmentTransaction fragmentTransaction =

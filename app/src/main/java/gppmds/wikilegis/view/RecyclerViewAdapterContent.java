@@ -206,6 +206,8 @@ public class RecyclerViewAdapterContent extends RecyclerView.Adapter<RecyclerVie
         }
         else {
             if(connectionType == NO_NETWORK){
+                Log.d("Tamanho list", listSegment.size() + "");
+
                 View view = LayoutInflater.from(parent.getContext()).inflate(offlineLayoutId, parent,
                         false);
                 contentViewHolder = new ContentViewHolder(view, listSegment);
