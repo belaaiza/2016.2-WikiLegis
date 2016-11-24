@@ -50,6 +50,11 @@ public class User {
         setPassword(password, passwordConfimation);
     }
 
+    public User(final String email, final String password) throws UserException {
+        setEmail(email);
+        setPassword(password, password);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -138,7 +143,7 @@ public class User {
     //Validation methods
 
     private boolean stringIsNull(final String string) {
-        if (string == null || string.isEmpty()) {
+        if (string == null || string.trim().isEmpty()) {
             return false;
         }
         return  true;

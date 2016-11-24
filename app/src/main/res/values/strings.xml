@@ -19,10 +19,59 @@
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_exit_account">Exit Account</string>
-    <string name="action_filtering">Filtrar</string>
+    <string name="action_logout">Sair</string>
+    <string name="action_login">Entrar</string>
+    <string name="action_config">Configurações de download</string>
     <string name="sucessfull_registration_message">Cadastro efetuado com sucesso!</string>
+    <string name="about_app">O Wikilegis é uma iniciativa da câmara dos deputados, que visa
+        aproximar a sociedade e seus representantes políticos através de interação digital.
+        Neste ambiente você tem acesso a projetos de leis que estão sendo elaborados e tem
+        a possibilidade de contribuir com eles, avaliando, sugerindo alterações e comentando
+        sua opinião.</string>
 
+
+    <!-- all SharedPreferences keys-->
+    <string name="token">token</string>
+    <string name="id">id</string>
+    <string name="is_logged_in">IsLoggedIn</string>
+    <string name="first_name">firstName</string>
+    <string name="last_name">lastName</string>
+    <string name="email">email</string>
+    <string name="network_settings">NetworkSettings</string>
+    <string name="last_downloaded_date">date</string>
+    <string name="share_url">shareUrl</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- Proposal suggestion strings -->
+    <string name="connection_problem">Desculpe, um problema ocorreu</string>
+    <string name="empty_segment">Por favor, digite uma sugestão</string>
+    <string name="success_proposal">Obrigado pela sugestão!</string>
+
+    <!-- Proposal comment strings -->
+    <string name="empty_comment">Por favor, digite um comentário</string>
+    <string name="success_comment">Obrigado pelo comentário!</string>
+
+
+    <!-- Download API URL's -->
+    <string name="bills_url">http://wikilegis-staging.labhackercd.net/api/bills/</string>
+    <string name="created_bills_url">http://wikilegis-staging.labhackercd.net/api/bills/?created=</string>
+    <string name="search_bills_url">http://wikilegis-staging.labhackercd.net/api/bills/?search=</string>
+
+    <string name="segments_url">http://wikilegis-staging.labhackercd.net/api/segments/</string>
+    <string name="created_segments_url">http://wikilegis-staging.labhackercd.net/api/segments/?created=</string>
+    <string name="modified_segments_url">http://wikilegis-staging.labhackercd.net/api/segments/?modified=</string>
+
+    <string name="comments_url">http://wikilegis-staging.labhackercd.net/api/comments/</string>
+
+    <string name="user_auth_url">http://wikilegis-staging.labhackercd.net/accounts/api-token-auth/</string>
+    <string name="user_create_url">http://wikilegis-staging.labhackercd.net/api/user/create/</string>
+
+    <!-- Sharing Edemocracia Links -->
+    <string name="edemocracia_domain">http://wikilegis-staging.labhackercd.net</string>
+    <string name="edemocracia_bill">/bill/</string>
+    <string name="edemocracia_segment">/segments/</string>
 </resources>

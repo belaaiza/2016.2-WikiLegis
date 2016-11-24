@@ -38,13 +38,15 @@ public class RecyclerViewAdapterBill extends RecyclerView.Adapter<RecyclerViewAd
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
 
                     Bundle bundle = new Bundle();
-                    bundle.putInt("segmentId", Integer.parseInt(view.getTag(R.id.idSegment).toString()));
+                    bundle.putInt("segmentId", Integer.parseInt(view.getTag(R.id.idSegment)
+                            .toString()));
                     bundle.putInt("billId", Integer.parseInt(view.getTag(R.id.idBill).toString()));
 
                     ViewSegmentFragment viewSegmentFragment = new ViewSegmentFragment();
                     viewSegmentFragment.setArguments(bundle);
 
-                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.main_content,
+                    activity.getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.main_content,
                             viewSegmentFragment).commit();
                 }
             });
@@ -76,6 +78,26 @@ public class RecyclerViewAdapterBill extends RecyclerView.Adapter<RecyclerViewAd
         personViewHolder.cardView.setTag(R.id.idSegment, segments.get(i).getId());
         personViewHolder.cardView.setTag(R.id.idBill, segments.get(i).getBill());
         personViewHolder.segment.setText(segmentsString);
+
+        settingClickableOfSegment(personViewHolder, i);
+    }
+
+    public void settingClickableOfSegment(final BillViewHolder personViewHolder, final int i) {
+        //Types of segments that can NOT be clickable
+        final int TITULO = 2;
+        final int ITEM = 6;
+        final int CAPITULO = 7;
+        final int LIVRO = 8;
+        final int SECAO = 9;
+        final int SUBSECAO = 10;
+
+        if (segments.get(i).getType() >= ITEM && segments.get(i).getType() <= SUBSECAO
+                || segments.get(i).getType() == TITULO) {
+            personViewHolder.cardView.setClickable(false);
+        }
+        else {
+            personViewHolder.cardView.setClickable(true);
+        }
     }
 
     @Override

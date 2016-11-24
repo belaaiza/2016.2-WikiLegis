@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="gppmds.wikilegis.view.ViewSegmentFragment"
     android:background="@drawable/background"
-    android:layout_marginTop="50dp">
+    android:id="@+id/view_segment_fragment">
 
     <FrameLayout
         android:layout_width="350dp"
@@ -22,7 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|top"
+            android:layout_gravity="left|top"
             >
 
             <TextView
@@ -32,7 +32,7 @@
                 android:id="@+id/titleBill"
                 android:autoText="false"
                 android:hint="Texto da bill"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
@@ -63,11 +63,11 @@
                 android:layout_height="30dp"
                 android:id="@+id/imageViewDislike"
                 android:src="@drawable/dislike"
-                android:layout_marginStart="130dp"
                 android:clickable="false"
-                android:layout_alignTop="@+id/imageViewLike"
-                android:layout_toEndOf="@+id/imageViewLike"
-                android:layout_marginBottom="15dp"/>
+                android:layout_marginEnd="70dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/contentSegment"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_marginStart="5dp"
                 android:clickable="false"
-                android:text="10"
+                android:text=""
                 android:id="@+id/textViewNumberLike"
                 android:layout_alignBottom="@+id/imageViewLike"
                 android:layout_toEndOf="@+id/imageViewLike" />
@@ -84,12 +84,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="30"
+                android:text=""
                 android:clickable="false"
                 android:id="@+id/textViewNumberDislike"
-                android:layout_marginStart="5dp"
-                android:layout_alignTop="@+id/textViewNumberLike"
-                android:layout_toEndOf="@+id/imageViewDislike" />
+                android:layout_alignTop="@+id/imageViewDislike"
+                android:layout_alignStart="@+id/imageViewDislike"
+                android:layout_marginStart="40dp" />
 
         </RelativeLayout>
 
@@ -117,31 +117,22 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Propostas"
                 android:clickable="false"
-                android:id="@+id/textView"
+                android:id="@+id/textViewProposal"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="10dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/imageViewProposal"
-                android:src="@drawable/chat"
-                android:clickable="false"
-                android:layout_alignBottom="@+id/textView"
-                android:layout_toStartOf="@+id/textView"
-                android:layout_marginEnd="30dp" />
         </RelativeLayout>
+
     </FrameLayout>
+
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recycler_viewSegment"
-        android:background="@android:color/transparent"
-        android:layout_alignStart="@+id/frameLayoutProposal"
-        android:layout_alignEnd="@+id/frameLayoutProposal"
-        android:layout_below="@+id/frameLayoutProposal"/>
+        android:background="@android:color/transparent"/>
 
 
 </RelativeLayout>
