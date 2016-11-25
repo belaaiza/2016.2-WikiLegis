@@ -7,12 +7,20 @@ import gppmds.wikilegis.exception.SegmentTypesException;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by augusto on 18/09/16.
- */
+
 public class SegmentTypesTest {
 
+    @Test
+        public void testCreateSegmentTypes(){
+        boolean isValid = true;
+        try{
+            SegmentTypes segmentTypes = new SegmentTypes(10,"name");
+        }catch (SegmentTypesException segmentTypesException){
+            isValid = false;
+        }
 
+        assertTrue(isValid);
+    }
     @Test
 
     public void testNullId(){

@@ -3,25 +3,21 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:orientation = "vertical"
-android:layout_marginBottom="1dp"
-android:layout_marginTop="1dp"
-    >
+android:layout_marginTop="1px">
 
 
 <android.support.v7.widget.CardView
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/frameCardViewSegment"
     android:layout_below="@+id/frameLayout"
     android:background="@color/cardview_light_background"
     android:layout_alignStart="@+id/frameLayout"
-    android:layout_alignEnd="@+id/frameLayout"
-    >
-
+    android:layout_alignEnd="@+id/frameLayout">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,28 +34,29 @@ android:layout_marginTop="1dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/chat"
-            android:id="@+id/imageViewProposal"
+            android:id="@+id/imageViewProposalCard"
             android:layout_below="@+id/textViewSegment"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
             android:layout_marginTop="10dp"
+            android:clickable="true"
              />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/dislike"
-            android:id="@+id/imageViewDislike"
+            android:id="@+id/imageViewDislikeCard"
             android:layout_marginEnd="100dp"
-            android:layout_alignBottom="@+id/imageViewProposal"
-            android:layout_toStartOf="@+id/imageViewProposal" />
+            android:layout_alignBottom="@+id/imageViewProposalCard"
+            android:layout_toStartOf="@+id/imageViewProposalCard" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/like"
-            android:id="@+id/imageView"
-            android:layout_alignTop="@+id/imageViewDislike"
+            android:id="@+id/imageViewLikeCard"
+            android:layout_alignTop="@+id/imageViewDislikeCard"
             android:layout_alignParentStart="true"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="15dp"/>
@@ -68,9 +65,9 @@ android:layout_marginTop="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textViewNumberLikeCard"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignTop="@+id/imageViewLikeCard"
+            android:layout_toEndOf="@+id/imageViewLikeCard"
+            android:layout_alignBottom="@+id/imageViewLikeCard"
             android:textSize="27dp"
             android:textIsSelectable="false"
             />
@@ -79,8 +76,8 @@ android:layout_marginTop="1dp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignTop="@+id/imageViewLikeCard"
+            android:layout_alignBottom="@+id/imageViewLikeCard"
             android:layout_marginStart="190dp"
             android:id="@+id/textViewNumberDislikeCard"
             android:textSize="27dp" />

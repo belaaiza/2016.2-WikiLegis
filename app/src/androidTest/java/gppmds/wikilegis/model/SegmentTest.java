@@ -8,10 +8,21 @@ import gppmds.wikilegis.exception.SegmentException;
 
 import static junit.framework.Assert.*;
 
-/**
- * Created by augusto on 18/09/16.
- */
+
 public class SegmentTest {
+
+    @Test
+    public void testeCreateSegment(){
+        boolean isValid = true;
+        try{
+            Segment segment = new Segment(13612,1,2,true,3,4,5,6,"content","Date");
+        }catch (SegmentException segmentException){
+            isValid = false;
+        }
+
+        assertTrue(isValid);
+    }
+
 
     @Test
 
@@ -141,5 +152,34 @@ public class SegmentTest {
         assertTrue(isValid);
     }
 
+    @Test
+    public void testNullDate(){
+
+        boolean isValid = true;
+
+        try{
+            Segment segment = new Segment(1,2,3,true,4,5,6,10,"Content",null);
+        }catch(SegmentException segmentException){
+            Log.d("test", segmentException.getMessage());
+            isValid = false;
+        }
+        assertTrue(isValid);
+
+    }
+
+    @Test
+    public void testEmptyDate(){
+
+        boolean isValid = true;
+
+        try{
+            Segment segment = new Segment(1,2,3,true,4,5,6,10,"Content","");
+        }catch(SegmentException segmentException){
+            Log.d("test", segmentException.getMessage());
+            isValid = false;
+        }
+        assertTrue(isValid);
+
+    }
 }
 

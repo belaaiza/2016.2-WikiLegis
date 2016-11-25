@@ -2,19 +2,28 @@ package gppmds.wikilegis.model;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
-import dalvik.annotation.TestTarget;
 import gppmds.wikilegis.exception.UserException;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by freemanpivo on 8/28/16.
- */
+
 public class UserTest {
 
+
+    @Test
+    public void testCreateUser() {
+        boolean isValid = true;
+
+        try {
+            User user = new User("Nara", "Cardoso", "a@a.com", "123456", "123456");
+        } catch (UserException userException) {
+            isValid = false;
+        }
+
+        assertTrue(isValid);
+
+    }
     @Test
     public void testEmptyFirstName() {
         boolean isValid = true;

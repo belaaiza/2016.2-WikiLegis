@@ -5,11 +5,24 @@ import org.junit.Test;
 import gppmds.wikilegis.exception.CommentsException;
 
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
-/**
- * Created by augusto on 17/09/16.
- */
+
+
 public class CommentsTest {
+
+    @Test
+    public void testCreateCommentsTest(){
+        boolean isValid = true;
+
+        try{
+            Comments comments = new Comments(22,22,"Date","ContentType",9,"Comment");
+        }catch (CommentsException commentsException){
+            isValid = false;
+        }
+        assertTrue(isValid);
+    }
+
     @Test
 
     public void testNullId(){
@@ -66,6 +79,19 @@ public class CommentsTest {
     }
 
     @Test
+    public void testDateOnlyWithSpace(){
+        boolean isValid = true;
+
+        try{
+            Comments comments = new Comments(22,22,"   ","ContentType",9,"Comment");
+        }catch (CommentsException commentsException){
+            isValid = false;
+        }
+
+        assertFalse(isValid);
+    }
+
+    @Test
 
     public void testNullContentType(){
         boolean isValid = true;
@@ -80,7 +106,7 @@ public class CommentsTest {
 
     @Test
 
-    public void testEmptuContentType(){
+    public void testEmptyContentType(){
         boolean isValid = true;
 
         try{
@@ -91,7 +117,18 @@ public class CommentsTest {
 
         assertFalse(isValid);
     }
+    @Test
+    public void testCommentTypeOnlyWithSpace(){
+        boolean isValid = true;
 
+        try{
+            Comments comments = new Comments(22,22,"Date","   ",9,"Comment");
+        }catch (CommentsException commentsException){
+            isValid = false;
+        }
+
+        assertFalse(isValid);
+    }
     @Test
 
     public void testNullObjectPk(){
@@ -127,6 +164,18 @@ public class CommentsTest {
 
         try{
             Comments comments = new Comments(22,22,"Date","ContentType",9,"");
+        }catch (CommentsException commentsException){
+            isValid = false;
+        }
+
+        assertFalse(isValid);
+    }
+    @Test
+    public void testCommentOnlyWithSpace(){
+        boolean isValid = true;
+
+        try{
+            Comments comments = new Comments(22,22,"Date","ContentType",9,"   ");
         }catch (CommentsException commentsException){
             isValid = false;
         }

@@ -1,16 +1,18 @@
 package gppmds.wikilegis.controller;
 
 import android.content.Context;
-
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import gppmds.wikilegis.dao.JSONHelper;
-import gppmds.wikilegis.dao.PostRequest;
-import gppmds.wikilegis.dao.SegmentDAO;
+import gppmds.wikilegis.R;
+import gppmds.wikilegis.dao.api.JSONHelper;
+import gppmds.wikilegis.dao.api.PostRequest;
+import gppmds.wikilegis.dao.database.SegmentDAO;
+import gppmds.wikilegis.exception.BillException;
 import gppmds.wikilegis.exception.SegmentException;
 import gppmds.wikilegis.model.Segment;
 
@@ -36,19 +38,121 @@ public class SegmentController {
         return segmentList;
     }
 
-    public static Segment getSegmentById(final Integer id) throws SegmentException {
+    public static Segment getSegmentById(final Integer id, Context context) throws SegmentException {
+        segmentDAO = SegmentDAO.getInstance(context);
         return segmentDAO.getSegmentById(id);
     }
+
+    public void setSegmentList(List<Segment> segmentList) {
+        SegmentController.segmentList = segmentList;
+    }
+
+    public Segment getSegmentByIdFromList(final Integer id ){
+        Log.d("Seg controller Size", segmentList.size() + "");
+
+        for (Segment segment : segmentList){
+            Log.d("Segment do get", segment.getContent());
+            if((segment.getId() + "").equals(id + "")){
+                return segment;
+            }
+        }
+        return null;
+    }
+
+    public List<Segment> getSegmentsOfBillById(String billId, String segmentId, boolean isProposal)
+            throws JSONException, BillException, SegmentException {
+
+        List<Segment> segmentList = null;
+        segmentList = JSONHelper.getSegmentFromBill(billId, segmentId);
+
+        List<Segment> orderedSegment = new ArrayList<>();
+
+        for (Segment segment : segmentList) {
+            if(!isProposal) {
+                if (segment.getReplaced() == 0) {
+
+                    orderedSegment.add(segment);
+                }
+            }else{
+                if (segment.getReplaced() > 0) {
+
+                    orderedSegment.add(segment);
+                }
+            }
+        }
+
+        orderSegments(orderedSegment);
+
+        Log.d("Segment size1", this.segmentList.size() + "");
+
+        return orderedSegment;
+    }
+
+    private List<Segment> orderSegments(List<Segment> orderedSegment) {
+        SegmentComparatorOrder comparator = new SegmentComparatorOrder();
+        Collections.sort(orderedSegment, comparator);
+
+        return orderedSegment;
+    }
+
 
     public void initControllerSegments() throws SegmentException, JSONException {
 
         segmentDAO = SegmentDAO.getInstance(context);
-        if (segmentDAO.isDatabaseEmpty()) {
-            segmentList = JSONHelper.segmentListFromJSON();
-            segmentDAO.insertAllSegments(segmentList);
-        } else {
-            segmentList = segmentDAO.getAllSegments();
-        }
+
+        SharedPreferences session = PreferenceManager.
+                getDefaultSharedPreferences(context);
+        String date = session.getString(context.getResources().getString(R.string.last_downloaded_date), "2010-01-01");
+        Log.d("data", date);
+
+        List<Segment> newSegments = JSONHelper.segmentListFromJSON(
+                "http://wikilegis-staging.labhackercd.net/api/segments/",
+                "?created=" + date);
+
+        Log.d("TAMANHO NEW", newSegments.size() + "");
+
+        segmentDAO.insertAllSegments(newSegments);
+
+        SegmentDAO segmentDAO = SegmentDAO.getInstance(context);
+
+        segmentList = segmentDAO.getAllSegments();
+
+        Log.d("TAMANHO SEGMENTS", segmentList.size() + "");
+    }
+
+    public List<Segment> getSegmentsByIdBill(Integer idBill)
+            throws SegmentException, JSONException {
+        segmentDAO = SegmentDAO.getInstance(context);
+
+        List<Segment> segmentList = segmentDAO.getSegmentsByIdBill(idBill);
+
+        return segmentList;
+    }
+
+    public void initModifiedSegments() throws SegmentException, JSONException {
+        segmentDAO = SegmentDAO.getInstance(context);
+
+        SharedPreferences session = PreferenceManager.
+                getDefaultSharedPreferences(context);
+        String date = session.getString(context.getResources().getString(R.string.last_downloaded_date), "2010-01-01");
+
+        Log.d("data", date);
+
+        List<Segment> newSegments = JSONHelper.segmentListFromJSON(
+                "http://wikilegis-staging.labhackercd.net/api/segments/",
+                "?modified=" + date);
+
+        segmentDAO.modifiedAllSegments(newSegments);
+
+        SegmentDAO segmentDAO = SegmentDAO.getInstance(context);
+
+        segmentList = segmentDAO.getAllSegments();
+    }
+
+    public void initSegmentsWithDatabase() throws SegmentException {
+        segmentList = new ArrayList<>();
+        segmentDAO = SegmentDAO.getInstance(context);
+        segmentList = segmentDAO.getAllSegments();
     }
 
     public static int getMinDate(final int id) {
@@ -76,64 +180,135 @@ public class SegmentController {
         }
         return aux;
     }
+    private static String numberRoman = "";
+    private static Integer number;
 
-    public static String convertRoman(Integer number) {
-        String numberRoman = "";
+    public static String convertRoman(Integer numberT) {
+        numberRoman = "";
+        number = numberT;
 
-        while (number >= 1000) {
-            numberRoman += "M";
-            number -= 1000;
-        }
-        while (number >= 900) {
-            numberRoman += "CM";
-            number -= 900;
-        }
-        while (number >= 500) {
-            numberRoman += "D";
-            number -= 500;
-        }
-        while (number >= 400) {
-            numberRoman += "CD";
-            number -= 400;
-        }
-        while (number >= 100) {
-            numberRoman += "C";
-            number -= 100;
-        }
-        while (number >= 90) {
-            numberRoman += "XC";
-            number -= 90;
-        }
-        while (number >= 50) {
-            numberRoman += "L";
-            number -= 50;
-        }
-        while (number >= 40) {
-            numberRoman += "XL";
-            number -= 40;
-        }
-        while (number >= 10) {
-            numberRoman += "X";
-            number -= 10;
-        }
-        while (number >= 9) {
-            numberRoman += "IX";
-            number -= 9;
-        }
-        while (number >= 5) {
-            numberRoman += "V";
-            number -= 5;
-        }
-        while (number >= 4) {
-            numberRoman += "IV";
-            number -= 4;
-        }
+        numberRomanBiggerThan1000();
+
+        numberRomanBiggerThan900();
+
+        numberRomanBiggerThan500();
+
+        numberRomanBiggerThan400();
+
+        numberRomanBiggerThan100();
+
+        numberRomanBiggerThan90();
+
+        numberRomanBiggerThan50();
+
+        numberRomanBiggerThan40();
+
+        numberRomanBiggerThan10();
+
+        numberRomanBiggerThan9();
+
+        numberRomanBiggerThan5();
+
+        numberRomanBiggerThan4();
+
+        numberRomanBiggerThan1();
+
+
+        return numberRoman;
+    }
+
+    private static void numberRomanBiggerThan1() {
         while (number >= 1) {
             numberRoman += "I";
             number -= 1;
         }
+    }
 
-        return numberRoman;
+    private static void numberRomanBiggerThan4() {
+        while (number >= 4) {
+            numberRoman += "IV";
+            number -= 4;
+        }
+    }
+
+    private static void numberRomanBiggerThan5() {
+        while (number >= 5) {
+            numberRoman += "V";
+            number -= 5;
+        }
+    }
+
+    private static void numberRomanBiggerThan9() {
+        while (number >= 9) {
+            numberRoman += "IX";
+            number -= 9;
+        }
+    }
+
+    private static void numberRomanBiggerThan10() {
+        while (number >= 10) {
+            numberRoman += "X";
+            number -= 10;
+        }
+    }
+
+    private static void numberRomanBiggerThan40() {
+        while (number >= 40) {
+            numberRoman += "XL";
+            number -= 40;
+        }
+    }
+
+    private static void numberRomanBiggerThan50() {
+        while (number >= 50) {
+            numberRoman += "L";
+            number -= 50;
+        }
+    }
+
+    private static void numberRomanBiggerThan90() {
+        while (number >= 90) {
+            numberRoman += "XC";
+            number -= 90;
+        }
+    }
+
+    private static void numberRomanBiggerThan100() {
+        while (number >= 100) {
+            numberRoman += "C";
+            number -= 100;
+        }
+    }
+
+    private static void numberRomanBiggerThan400() {
+        while (number >= 400) {
+            numberRoman += "CD";
+            number -= 400;
+
+        }
+    }
+
+    private static void numberRomanBiggerThan500() {
+        while (number >= 500) {
+            numberRoman += "D";
+            number -= 500;
+
+        }
+    }
+
+    private static void numberRomanBiggerThan900() {
+        while (number >= 900) {
+            numberRoman += "CM";
+            number -= 900;
+
+        }
+    }
+
+    private static void numberRomanBiggerThan1000() {
+        while (number >= 1000) {
+            numberRoman += "M";
+            number -= 1000;
+        }
     }
 
     public boolean isSegmentDatabaseIsEmpty() {
@@ -194,4 +369,42 @@ public class SegmentController {
             }
         return aux;
     }
+
+    public String registerSegment(final int idBill,
+                                  final int replaced,
+                                  String content,
+                                  Context context) throws JSONException, SegmentException{
+
+
+        String result ;
+
+        if(content.isEmpty()){
+            result = context.getResources().getString(R.string.empty_segment);
+
+        }else{
+
+            SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
+
+            String url = "http://wikilegis-staging.labhackercd.net/api/segments/";
+
+            String json = "{" +
+                    "\"bill\": " +idBill+","+
+                    "\"replaced\": " + replaced+","+
+                    "\"content\": \"" +content+"\","+
+                    "\"token\": \""+session.getString("token",null) +"\""+
+                    "}";
+
+
+            Log.d("URL", url);
+            Log.d("URL PARAMS", json);
+
+            PostRequest postRequest = new PostRequest(context, url);
+            postRequest.execute(json, "application/json");
+            result = "SUCCESS";
+
+        }
+        return result;
+    }
+
+
 }

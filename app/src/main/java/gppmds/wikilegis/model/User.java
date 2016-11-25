@@ -3,7 +3,6 @@ package gppmds.wikilegis.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import gppmds.wikilegis.exception.UserException;
 
 public class User {
@@ -48,6 +47,11 @@ public class User {
         setLastName(lastName);
         setEmail(email);
         setPassword(password, passwordConfimation);
+    }
+
+    public User(final String email, final String password) throws UserException {
+        setEmail(email);
+        setPassword(password, password);
     }
 
     public String getFirstName() {
@@ -138,7 +142,7 @@ public class User {
     //Validation methods
 
     private boolean stringIsNull(final String string) {
-        if (string == null || string.isEmpty()) {
+        if (string == null || string.trim().isEmpty()) {
             return false;
         }
         return  true;
